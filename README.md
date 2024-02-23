@@ -352,12 +352,12 @@ def train(self, train_X, train_Y, epochs, batch_size, learning_rate):
 ---
 # Relevant formulas
 ## Activation Functions and Their Derivatives 
-'''math
+```math
 - **Sigmoid Function and Derivative**: $$\begin{gather} \sigma(x) = \frac{1}{1 + e^{-x}} \\ \frac{d\sigma(x)}{dx} = \sigma(x)(1 - \sigma(x)) \end{gather}$$
 - **ReLU (Rectified Linear Unit) and Derivative**: $$\begin{gather} \text{ReLU}(x) = \max(0, x) \\ \frac{d(\text{ReLU}(x))}{dx} = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{otherwise} \end{cases} \end{gather}$$
 - **Leaky ReLU and Derivative**: $$\begin{gather} \text{LeakyReLU}(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha x & \text{otherwise} \end{cases} \\ \frac{d(\text{LeakyReLU}(x))}{dx} = \begin{cases} 1 & \text{if } x > 0 \\ \alpha & \text{otherwise} \end{cases} \end{gather}$$
 - **Hyperbolic Tangent (Tanh) and Derivative**: $$\begin{gather} \tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}} \\ \frac{d(\tanh(x))}{dx} = 1 - \tanh^2(x) \end{gather}$$
-'''
+```
 ---
 ## Forward propagation
 Forward propagation is the process a neural network goes from an input to a prediction. Given a neural network with $L$ layers, the forward propagation goes as follows:
