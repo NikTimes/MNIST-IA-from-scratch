@@ -352,20 +352,19 @@ def train(self, train_X, train_Y, epochs, batch_size, learning_rate):
 ---
 # Relevant formulas
 ## Activation Functions and Their Derivatives 
-```math
-- **Sigmoid Function and Derivative**: $$\begin{gather} \sigma(x) = \frac{1}{1 + e^{-x}} \\ \frac{d\sigma(x)}{dx} = \sigma(x)(1 - \sigma(x)) \end{gather}$$
-- **ReLU (Rectified Linear Unit) and Derivative**: $$\begin{gather} \text{ReLU}(x) = \max(0, x) \\ \frac{d(\text{ReLU}(x))}{dx} = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{otherwise} \end{cases} \end{gather}$$
-- **Leaky ReLU and Derivative**: $$\begin{gather} \text{LeakyReLU}(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha x & \text{otherwise} \end{cases} \\ \frac{d(\text{LeakyReLU}(x))}{dx} = \begin{cases} 1 & \text{if } x > 0 \\ \alpha & \text{otherwise} \end{cases} \end{gather}$$
-- **Hyperbolic Tangent (Tanh) and Derivative**: $$\begin{gather} \tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}} \\ \frac{d(\tanh(x))}{dx} = 1 - \tanh^2(x) \end{gather}$$
-```
+
+- **Sigmoid Function and Derivative**: \[ \begin{gather} \sigma(x) = \frac{1}{1 + e^{-x}} \\ \frac{d\sigma(x)}{dx} = \sigma(x)(1 - \sigma(x)) \end{gather} \]
+- **ReLU (Rectified Linear Unit) and Derivative**: \[ \begin{gather} \text{ReLU}(x) = \max(0, x) \\ \frac{d(\text{ReLU}(x))}{dx} = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{otherwise} \end{cases} \end{gather} \]
+- **Leaky ReLU and Derivative**: \[\begin{gather} \text{LeakyReLU}(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha x & \text{otherwise} \end{cases} \\ \frac{d(\text{LeakyReLU}(x))}{dx} = \begin{cases} 1 & \text{if } x > 0 \\ \alpha & \text{otherwise} \end{cases} \end{gather} \]
+- **Hyperbolic Tangent (Tanh) and Derivative**: \[ \begin{gather} \tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}} \\ \frac{d(\tanh(x))}{dx} = 1 - \tanh^2(x) \end{gather} \]
 ---
 ## Forward propagation
 Forward propagation is the process a neural network goes from an input to a prediction. Given a neural network with $L$ layers, the forward propagation goes as follows:
-1. For the input layer ($l=1$), the input $\mathbf{x}$ is provided directly to the network:$$\mathbf{a}^{(0)} = \mathbf{x}$$
-2. For each subsequent layer from $l=2$ to $L$, the forward pass is computed using the following equations:$$\begin{gather}
+1. For the input layer ($l=1$), the input $\mathbf{x}$ is provided directly to the network: \[ \mathbf{a}^{(0)} = \mathbf{x} \]
+2. For each subsequent layer from $l=2$ to $L$, the forward pass is computed using the following equations: \[ \begin{gather}
   \mathbf{z}^{(l)} = \mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}\\
   \mathbf{a}^{(l)} = \sigma^{(l)}(\mathbf{z}^{(l)})
-  \end{gather}$$Where:
+  \end{gather} \]Where:
 - $\mathbf{W}^{(l)}$ is the weight matrix for layer $l$.
 - $\mathbf{b}^{(l)}$ is the bias vector for layer $l$.
 - $\mathbf{a}^{(l-1)}$ is the activation from the previous layer $l-1$, with $\mathbf{a}^{(0)} = \mathbf{x}$ being the input to the network.
@@ -378,43 +377,52 @@ The output after the last layer $L$ is denoted as $\mathbf{a}^{(L)}$ and is used
 ---
 ## Backpropagation Overview
 ### Output Layer Error Term $\Omega^{(L)}$
-The calculation of the error term for the final layer, denoted as $\Omega^{(L)}$, is a crucial step in backpropagation. It is dependent on $\mathcal{E}^{(L)}$, which is the gradient of the cost function with respect to the network's output. This gradient measures the deviation between the predicted outputs and the actual target values.$$\Omega^{(L)} = \sigma'^{(L)}(\mathbf{z}^{(L)}) \odot \mathcal{E}^{(L)}$$
+The calculation of the error term for the final layer, denoted as $\Omega^{(L)}$, is a crucial step in backpropagation. It is dependent on $\mathcal{E}^{(L)}$, which is the gradient of the cost function with respect to the network's output. This gradient measures the deviation between the predicted outputs and the actual target values. \[ \Omega^{(L)} = \sigma'^{(L)}(\mathbf{z}^{(L)}) \odot \mathcal{E}^{(L)} \]
 Where:
 - $\mathbf{z}^{(L)}$ is the weighted input to the final layer's activation function.
 - $\sigma'^{(L)}(\mathbf{z}^{(L)})$ is the derivative of the activation function at the final layer.
-- $\mathcal{E}^{(L)}$ is derived by differentiating the cost function (e.g., MSE or Cross-Entropy) with respect to the output neurons and represents the initial error signal that will propagate back through the network.>)
+- $\mathcal{E}^{(L)}$ is derived by differentiating the cost function (e.g., MSE or Cross-Entropy) with respect to the output neurons and represents the initial error signal that will propagate back through the network.
 ### Error Propagation
-Once the error at the output layer $\Omega^{(L)}$ is computed, it's propagated backward through the network. The propagated error for layer $(l)$, denoted as $\mathcal{E}^{(l)}$, is given by:$$\mathcal{E}^{(l)} = \Omega^{(l+1)} \cdot \mathbf{W}^{(l+1)T} $$
+Once the error at the output layer $\Omega^{(L)}$ is computed, it's propagated backward through the network. The propagated error for layer $(l)$, denoted as $\mathcal{E}^{(l)}$, is given by: \[ \mathcal{E}^{(l)} = \Omega^{(l+1)} \cdot \mathbf{W}^{(l+1)T} \]
 Where:
 - \($\mathbf{W}^{(l+1)} \  \text{are the weights connecting layer} \ (l) \ \text{to layer} \ (l+1)$.
 - $\Omega^{(l+1)}$ is the error term from the subsequent layer.
 
 $\mathcal{E}^{(l)}$ encapsulates how errors from neurons in layer $( l+1 )$ propagate back to layer $(l)$ based on the strength of the connections (weights).
 ### Activation Function Sensitivity
-The sensitivity of the activation function at layer $( l )$, represented by $\Omega^{(l)}$, reflects how changes to the weighted sum input affect the layer's activation. It is calculated as:$$\Omega^{(l)} = \sigma'^{(l)}(\mathbf{z}^{(l)}) \odot \mathcal{E}^{(l)}$$Where:
+The sensitivity of the activation function at layer $( l )$, represented by $\Omega^{(l)}$, reflects how changes to the weighted sum input affect the layer's activation. It is calculated as: \[ \Omega^{(l)} = \sigma'^{(l)}(\mathbf{z}^{(l)}) \odot \mathcal{E}^{(l)}\] Where:
 - $\sigma'^{(l)}(\mathbf{z}^{(l)})$ is the derivative of the activation function at layer $( l )$.
 -  $\odot$ denotes the element-wise multiplication.
+
+
+
+
+
+
+
+
+
 
 This term, $\Omega^{(l)}$, combines the propagated error with the activation function's gradient, adjusting the error based on the non-linear transformation applied at each neuron.
 ### Parameter Updates Using $\Omega^{(l)}$
 With $\Omega^{(l)}$ in hand, we update the parameters:
 
 - **Weights**: The weight gradient, $\Delta \mathbf{W}^{(l)}$, involves the activations from the preceding layer and the sensitivity of the current layer:$$\nabla_{\mathbf{W}}\mathcal{J}^{(l)}= \mathbf{a}^{(l-1)T} \cdot \Omega^{(l)}$$
-- **Biases**: The bias gradient, $\Delta \mathbf{b}^{(l)}$, sums the sensitivities across the batch:$$\nabla_{\mathbf{b}}\mathcal{J}^{(l)}= \sum(\Omega^{(l)})$$
+- **Biases**: The bias gradient, $\Delta \mathbf{b}^{(l)}$, sums the sensitivities across the batch: [\ \nabla_{\mathbf{b}}\mathcal{J}^{(l)}= \sum(\Omega^{(l)}) \]
 Parameters are updated in the direction that reduces loss, modulated by the learning rate.
 --- 
 ## Parameter Update Rule
-The parameters of the network, weights $\mathbf{W}$, and biases $\mathbf{b}$, are updated following the gradient descent rule:$$\begin{gather}
+The parameters of the network, weights $\mathbf{W}$, and biases $\mathbf{b}$, are updated following the gradient descent rule: [\ \begin{gather}
 \mathbf{W} \leftarrow \mathbf{W} - \alpha \cdot \nabla_{\mathbf{W}}\mathcal{J}\\
 \mathbf{b} \leftarrow \mathbf{b} - \alpha \cdot \nabla_{\mathbf{b}} \mathcal{J}
-\end{gather}$$Where:
+\end{gather} \]Where:
 - $\alpha$ is the learning rate.
 - $\nabla_{\mathbf{W}} \mathcal{J}$ is the gradient of the cost function $\mathcal{J}$ with respect to the weights.
 - $\nabla_{\mathbf{b}} \mathcal{J}$ is the gradient of the cost function with respect to the biases.
 ---
 ## Accuracy Calculation
 The accuracy of the network's predictions is calculated as follows:
-$$\begin{gather}\text{Accuracy (acc)} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{1}(\hat{y}_i = y_i)\end{gather}$$
+[\ \begin{gather}\text{Accuracy (acc)} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{1}(\hat{y}_i = y_i)\end{gather} \]
 Where:
 - $N$ is the total number of samples.
 - $\hat{y}_i$ is the predicted label for the $i$-th sample.
@@ -426,18 +434,18 @@ Consider a scenario where we have a batch of 5 samples with the following predic
 - Predicted labels: $\hat{y} = [1, 2, 1, 0, 2]$
 - True labels: $y = [1, 1, 1, 0, 2]$
 
-Using the accuracy formula:$$\begin{gather}
-\text{Accuracy (acc)} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{1}(\hat{y}_i = y_i)\end{gather}$$We calculate the accuracy as:$$\begin{gather}
+Using the accuracy formula: \[ \begin{gather}
+\text{Accuracy (acc)} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{1}(\hat{y}_i = y_i)\end{gather} \] We calculate the accuracy as: \[\begin{gather}
 \text{acc} = \frac{1}{5} (\mathbb{1}(1 = 1) + \mathbb{1}(2 = 1) + \mathbb{1}(1 = 1) + \mathbb{1}(0 = 0) + \mathbb{1}(2 = 2))
 \\
 \text{acc} = \frac{1}{5} (1 + 0 + 1 + 1 + 1) = \frac{4}{5} = 0.8
-\end{gather}$$The accuracy for these predictions is 0.8 or 80%, indicating that 4 out of 5 predictions match the true labels.
+\end{gather} \]The accuracy for these predictions is 0.8 or 80%, indicating that 4 out of 5 predictions match the true labels.
 
 ---
 ## Cross-Entropy Loss Function
-The cross-entropy loss function is used for classification tasks and is defined as:$$\begin{gather}
+The cross-entropy loss function is used for classification tasks and is defined as: \[ \begin{gather}
 \mathcal{J} = -\sum_{i=1}^{C} y_i \cdot \log(\hat{y}_i)
-\end{gather}$$Where:
+\end{gather} \] Where:
 - $C$ is the number of classes.
 - $y_i$ is the true label, which is 1 for the correct class and 0 otherwise (one-hot encoded).
 - $\hat{y}_i$ is the predicted probability for class $i$.
@@ -448,15 +456,15 @@ This loss function penalizes incorrect predictions with a higher cost, increasin
 ## Epoch Loss and Accuracy
 To assess the model's performance during training, we compute the average loss and accuracy per epoch:
 ### Epoch Loss
-The average loss over an epoch is calculated by aggregating the individual losses and dividing by the total number of batches:$$\begin{gather}
+The average loss over an epoch is calculated by aggregating the individual losses and dividing by the total number of batches: \[ \begin{gather}
 \text{epoch\_loss} = \frac{1}{N} \sum_{j=1}^{N} \mathcal{J}_j
-\end{gather}$$Where:
+\end{gather} \] Where:
 - $N$ is the total number of samples in the epoch.
 - $\mathcal{J}_j$ is the loss for batch $j$.
 ### Epoch Accuracy
-The average accuracy over an epoch is the proportion of correct predictions:$$\begin{gather}
+The average accuracy over an epoch is the proportion of correct predictions: \[ \begin{gather}
 \text{epoch\_accuracy} = \frac{1}{N} \sum_{k=1}^{N} \mathbb{1}(\hat{y}_k = y_k)
-\end{gather}$$Where:
+\end{gather} \] Where:
 - $N$ is the total number of samples in the epoch.
 - $\hat{y}_k$ is the predicted label for the $k$-th sample.
 - $y_k$ is the true label for the $k$-th sample.
